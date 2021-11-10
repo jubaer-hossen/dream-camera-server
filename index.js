@@ -37,12 +37,21 @@ async function run() {
             res.send(service);
         });
 
-        // Get Order Api
+        // GET ORDER BY EMAIL
         app.get('/orders', async (req, res) => {
-            const cursor = orderCollection.find({});
-            const service = await cursor.toArray();
-            res.send(service);
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.json(orders);
         });
+
+        // Get Order Api
+        // app.get('/orders', async (req, res) => {
+        //     const cursor = orderCollection.find({});
+        //     const service = await cursor.toArray();
+        //     res.send(service);
+        // });
 
         // Get Single Service
         app.get('/services/:id', async (req, res) => {
