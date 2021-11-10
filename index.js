@@ -47,11 +47,11 @@ async function run() {
         });
 
         // Get Order Api
-        // app.get('/orders', async (req, res) => {
-        //     const cursor = orderCollection.find({});
-        //     const service = await cursor.toArray();
-        //     res.send(service);
-        // });
+        app.get('/allOrders', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
 
         // Get Single Service
         app.get('/services/:id', async (req, res) => {
