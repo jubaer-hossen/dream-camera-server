@@ -63,6 +63,17 @@ async function run() {
             res.json(result);
         });
 
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            let isAdmin = false;
+            if (user?.role === 'admin') {
+                isAdmin = true;
+            }
+            res.json({ admin: isAdmin });
+        });
+
         // POST USER API
         app.post('/users', async (req, res) => {
             const user = req.body;
@@ -80,6 +91,15 @@ async function run() {
                 updateDoc,
                 options
             );
+            res.json(result);
+        });
+
+        // Make Admin API
+        app.put('/users/admin', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
             res.json(result);
         });
 
