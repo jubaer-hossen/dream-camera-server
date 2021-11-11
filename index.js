@@ -29,12 +29,19 @@ async function run() {
         const servicesCollection = database.collection('services');
         const orderCollection = database.collection('orders');
         const usersCollection = database.collection('users');
+        const reviewsCollection = database.collection('reviews');
 
         // Get Api
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({});
             const service = await cursor.toArray();
             res.send(service);
+        });
+
+        app.get('/allReviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
         });
 
         // GET ORDER BY EMAIL
@@ -68,6 +75,15 @@ async function run() {
             console.log('hit the post api', service);
 
             const result = await servicesCollection.insertOne(service);
+            // console.log(result);
+            res.json(result);
+        });
+
+        app.post('/reviews', async (req, res) => {
+            const reviews = req.body;
+            console.log('hit the review api', reviews);
+
+            const result = await reviewsCollection.insertOne(reviews);
             // console.log(result);
             res.json(result);
         });
